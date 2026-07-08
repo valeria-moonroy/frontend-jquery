@@ -45,3 +45,39 @@ function registroUsuarios() {
     }
   });
 }
+function cargarUsuarios() {
+  $.ajax({
+    url: API_USUARIOS,
+    method: 'GET',
+    success: function (usuarios) {
+      let filas = '';
+
+      if (usuarios.length === 0) {
+        filas = `
+          <tr>
+            <td colspan="4" class="text-center text-muted">
+              No hay usuarios registrados
+            </td>
+          </tr>
+        `;
+      }
+
+      usuarios.forEach(function (usuario) {
+        filas += `
+          <tr>
+            <td>${usuario.id}</td>
+            <td>${usuario.nombre}</td>
+            <td>${usuario.correo}</td>
+            <td>${usuario.identificacion}</td>
+          </tr>
+        `;
+      });
+
+      $('#tablaUsuarios').html(filas);
+    },
+    error: function (xhr) {
+      alert('Error al cargar usuarios');
+      console.log(xhr.responseJSON || xhr);
+    }
+  });
+}
