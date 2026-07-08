@@ -1,119 +1,155 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="./wwwroot/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./wwwroot/css/bootstrap-icons.min.css">
-    <script src="./wwwroot/js/jquery-4.0.0.min.js"></script>
-    <script src="./wwwroot/js/script.js"></script>
-  </head>
-  <body>
-    <header>
-      <div class="px-3 py-2 text-bg-primary border-bottom">
-        <div class="container">
-          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"> 
-              <i class="bi bi-bootstrap fw-bold fs-5 pe-2"></i>
-            </a>
-            <nav >
-            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-              <li><a class="nav-link text-white" href="#"> <i class="bi bi-house fw-bold fs-5 pe-2"></i>Home</a></li>
-              <li><a class="nav-link text-white" href="#"> 
-                  <i class="bi bi-box-arrow-in-left fw-bold fs-5 pe-2"></i>Login
-                </a></li>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel de Biblioteca</title>
 
-            </ul>
-            </nav>
-          </div>
+  <link href="./wwwroot/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./wwwroot/css/bootstrap-icons.min.css">
 
-        </div>
-      </div>
-    </header>
+  <script src="./wwwroot/js/jquery-4.0.0.min.js"></script>
+  <script src="./wwwroot/js/script.js"></script>
+</head>
+
+<body>
+<header>
+  <div class="px-3 py-2 text-bg-primary border-bottom">
     <div class="container-fluid">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+          <i class="bi bi-bootstrap fw-bold fs-5 pe-2"></i>
+        </a>
 
-      <div class="row">
-
-        <aside class="col-8 col-sm-6 col-md-3 col-lg-3 col-xl-2 d-none d-lg-block show"
-        style="position: fixed; top: 0;bottom: 0;left: 0;border-right: 1px solid var(--bs-border-color-translucent); margin-top:70px; padding: 15px 0 0;z-index: 999; overflow-y: auto;">
-        <div class="px-3">
-          <nav>
-          <ul class="nav nav-pills flex-column mb-auto">            
-            <li class="nav-item">
-              <a class="nav-link active" href="#" onclick="document.getElementById('lightbulb').src='./wwwroot/img/bulboff.gif'">
-              <i class="bi bi-lightbulb fw-bold fs-5 pe-2"></i>
-              Apagado</a>
+        <nav>
+          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+            <li>
+              <a class="nav-link text-white" href="dashboard.html">
+                <i class="bi bi-house fw-bold fs-5 pe-2"></i>Home
+              </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link"  href="#" onclick="document.getElementById('lightbulb').src='./wwwroot/img/bulbon.gif'">
-              <i class="bi bi-lightbulb-fill fw-bold fs-5 pe-2"></i>
-              Encendido</a>
+            <li>
+              <a class="nav-link text-white" href="index.html">
+                <i class="bi bi-box-arrow-in-left fw-bold fs-5 pe-2"></i>Login
+              </a>
             </li>
           </ul>
         </nav>
-        </div>
-        
-      </aside>
-
-      <main class="col-lg-9 col-xl-10 offset-lg-3 offset-xl-2">
-
-        <div class="row">
-          <div class="col-12 offset-sm-0 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 mt-5">
-            <div class="container mt-5">
-  <h1 class="mb-4">Panel de Biblioteca</h1>
-
-  <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5 class="mb-0">Usuarios registrados</h5>
-      <button class="btn btn-primary btn-sm" onclick="cargarUsuarios()">
-        Cargar usuarios
-      </button>
-    </div>
-
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Correo</th>
-              <th>Identificación</th>
-            </tr>
-          </thead>
-          <tbody id="tablaUsuarios">
-            <tr>
-              <td colspan="4" class="text-center text-muted">
-                Presiona "Cargar usuarios"
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </div>
-</div>
+</header>
 
+<div class="container-fluid">
+  <div class="row">
+
+    <aside class="col-8 col-sm-6 col-md-3 col-lg-3 col-xl-2 d-none d-lg-block show"
+           style="position: fixed; top: 0; bottom: 0; left: 0; border-right: 1px solid var(--bs-border-color-translucent); margin-top:70px; padding: 15px 0 0; z-index: 999; overflow-y: auto;">
+      <div class="px-3">
+        <nav>
+          <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#usuarios">
+                <i class="bi bi-people fw-bold fs-5 pe-2"></i>
+                Usuarios
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#autores">
+                <i class="bi bi-person-lines-fill fw-bold fs-5 pe-2"></i>
+                Autores
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="col-lg-9 col-xl-10 offset-lg-3 offset-xl-2">
+      <div class="container mt-5 mb-5">
+
+        <h1 class="mb-4">Panel de Biblioteca</h1>
+
+        <!-- USUARIOS -->
+        <div class="card" id="usuarios">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Usuarios registrados</h5>
+            <button class="btn btn-primary btn-sm" onclick="cargarUsuarios()">
+              Cargar usuarios
+            </button>
           </div>
 
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th>Identificación</th>
+                </tr>
+                </thead>
+                <tbody id="tablaUsuarios">
+                <tr>
+                  <td colspan="4" class="text-center text-muted">
+                    Presiona "Cargar usuarios"
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-          
-      </main>
+
+        <!-- AUTORES -->
+        <div class="card mt-4" id="autores">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Autores</h5>
+            <button class="btn btn-primary btn-sm" onclick="cargarAutores()">
+              Cargar autores
+            </button>
+          </div>
+
+          <div class="card-body">
+            <div class="row g-2 mb-3">
+              <div class="col-md-9">
+                <input class="form-control" id="autorNombre" placeholder="Nombre del autor">
+              </div>
+              <div class="col-md-3">
+                <button class="btn btn-success w-100" onclick="registrarAutor()">
+                  Registrar autor
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                </tr>
+                </thead>
+                <tbody id="tablaAutores">
+                <tr>
+                  <td colspan="2" class="text-center text-muted">
+                    Presiona "Cargar autores"
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
       </div>
-      
-      <div class="row">
-        
-      </div>
-      
-    </div>
-    
-    
-    
+    </main>
 
+  </div>
+</div>
 
-    <script src="./js/bootstrap.bundle.min.js"></script>
-  </body>
+<script src="./wwwroot/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
-

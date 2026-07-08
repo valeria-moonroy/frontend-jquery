@@ -45,6 +45,7 @@ function registroUsuarios() {
     }
   });
 }
+
 function cargarUsuarios() {
   $.ajax({
     url: API_USUARIOS,
@@ -77,6 +78,70 @@ function cargarUsuarios() {
     },
     error: function (xhr) {
       alert('Error al cargar usuarios');
+      console.log(xhr.responseJSON || xhr);
+    }
+  });
+}
+
+function cargarAutores() {
+  $.ajax({
+    url: API_AUTORES,
+    method: 'GET',
+    success: function (autores) {
+      let filas = '';
+
+      if (autores.length === 0) {
+        filas = `
+          <tr>
+            <td colspan="2" class="text-center text-muted">
+              No hay autores registrados
+            </td>
+          </tr>
+        `;
+      }
+
+      autores.forEach(function (autor) {
+        filas += `
+          <tr>
+            <td>${autor.id}</td>
+            <td>${autor.nombre}</td>
+          </tr>
+        `;
+      });
+
+      $('#tablaAutores').html(filas);
+    },
+    error: function (xhr) {
+      alert('Error al cargar autores');
+      console.log(xhr.responseJSON || xhr);
+    }
+  });
+}
+
+function registrarAutor() {
+  const nombre = $('#autorNombre').val();
+
+  if (!nombre) {
+    alert('Escribe el nombre del autor');
+    return;
+  }
+
+  $.ajax({
+    url: API_AUTORES,
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      nombre: nombre
+    }),
+    success: function (response) {
+      alert(response.message || 'Autor registrado correctamente');
+
+      $('#autorNombre').val('');
+      cargarAutores();
+    },
+    error: function (xhr) {
+      const message = xhr.responseJSON?.message || 'Error al registrar autor';
+      alert(message);
       console.log(xhr.responseJSON || xhr);
     }
   });
