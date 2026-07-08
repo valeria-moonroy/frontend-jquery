@@ -146,3 +146,79 @@ function registrarAutor() {
     }
   });
 }
+function cargarLibros() {
+  $.ajax({
+    url: API_LIBROS,
+    method: 'GET',
+    success: function (libros) {
+      let filas = '';
+
+      if (libros.length === 0) {
+        filas = `
+          <tr>
+            <td colspan="5" class="text-center text-muted">
+              No hay libros registrados
+            </td>
+          </tr>
+        `;
+      }
+
+      libros.forEach(function (libro) {
+        filas += `
+          <tr>
+            <td>${libro.id}</td>
+            <td>${libro.titulo}</td>
+            <td>${libro.autor_id}</td>
+            <td>${libro.isbn || ''}</td>
+            <td>${libro.cantidad}</td>
+          </tr>
+        `;
+      });
+
+      $('#tablaLibros').html(filas);
+    },
+    error: function (xhr) {
+      alert('Error al cargar libros');
+      console.log(xhr.responseJSON || xhr);
+    }
+  });
+}
+
+function registrarLibro() {
+  const titulo = $('#libroTitulo').val();
+  const autorId = $('#libroAutorId').val();
+  const isbn = $('#libroIsbn').val();
+  const cantidad = $('#libroCantidad').val();
+
+  if (!titulo || !autorId || !cantidad) {
+    alert('Completa título, ID del autor y cantidad');
+    return;
+  }
+
+  $.ajax({
+    url: API_LIBROS,
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      titulo: titulo,
+      autor_id: Number(autorId),
+      isbn: isbn,
+      cantidad: Number(cantidad)
+    }),
+    success: function (response) {
+      alert(response.message || 'Libro registrado correctamente');
+
+      $('#libroTitulo').val('');
+      $('#libroAutorId').val('');
+      $('#libroIsbn').val('');
+      $('#libroCantidad').val('');
+
+      cargarLibros();
+    },
+    error: function (xhr) {
+      const message = xhr.responseJSON?.message || 'Error al registrar libro';
+      alert(message);
+      console.log(xhr.responseJSON || xhr);
+    }
+  });
+}
