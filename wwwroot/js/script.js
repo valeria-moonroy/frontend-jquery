@@ -366,3 +366,16 @@ function registrarDevolucion() {
     }
   });
 }
+function login() {
+  const email = $('#email').val();
+  const pwd = $('#pwd').val();
+
+  if (!email || !pwd) {
+    alert('Escribe tu email y contraseña');
+    return;
+  }
+
+  localStorage.setItem('usuario_logueado', email);
+
+  window.location.href = 'dashboard.html';
+}
