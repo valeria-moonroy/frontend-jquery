@@ -16,3 +16,77 @@ function changeImage(){
 	     }
 	    });
 }
+function cargarPrestamos() {
+  $.ajax({
+    url: API_PRESTAMOS,
+    method: 'GET',
+    success: function (prestamos) {
+      let filas = '';
+
+      if (prestamos.length === 0) {
+        filas = `
+          <tr>
+            <td colspan="6" class="text-center text-muted">
+              No hay préstamos registrados
+            </td>
+          </tr>
+        `;
+      }
+
+      prestamos.forEach(function (prestamo) {
+        filas += `
+          <tr>
+            <td>${prestamo.id}</td>
+            <td>${prestamo.usuario_id}</td>
+            <td>${prestamo.libro_id}</td>
+            <td>${prestamo.fecha_prestamo}</td>
+            <td>${prestamo.fecha_limite}</td>
+            <td>${prestamo.estado}</td>
+          </tr>
+        `;
+      });
+
+      $('#tablaPrestamos').html(filas);
+    },
+    error: function (xhr) {
+      alert('Error al cargar préstamos');
+      console.log(xhr.responseJSON || xhr);
+    }
+  });
+}
+
+function registrarPrestamo() {
+  const usuarioId = $('#prestamoUsuarioId').val();
+  const libroId = $('#prestamoLibroId').val();
+  const fechaLimite = $('#prestamoFechaLimite').val();
+
+  if (!usuarioId || !libroId || !fechaLimite) {
+    alert('Completa ID usuario, ID libro y fecha límite');
+    return;
+  }
+
+  $.ajax({
+    url: API_PRESTAMOS,
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      usuario_id: Number(usuarioId),
+      libro_id: Number(libroId),
+      fecha_limite: fechaLimite
+    }),
+    success: function (response) {
+      alert(response.message || 'Préstamo registrado correctamente');
+
+      $('#prestamoUsuarioId').val('');
+      $('#prestamoLibroId').val('');
+      $('#prestamoFechaLimite').val('');
+
+      cargarPrestamos();
+    },
+    error: function (xhr) {
+      const message = xhr.responseJSON?.message || 'Error al registrar préstamo';
+      alert(message);
+      console.log(xhr.responseJSON || xhr);
+    }
+  });
+}
