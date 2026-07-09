@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="./wwwroot/css/bootstrap-icons.min.css">
 
   <script src="./wwwroot/js/jquery-4.0.0.min.js"></script>
-  <script src="./wwwroot/js/script.js?v=2"></script>
+  <script src="./wwwroot/js/script.js?v=3"></script>
 </head>
 
 <body>
@@ -76,6 +76,13 @@
               <a class="nav-link" href="#prestamos">
                 <i class="bi bi-journal-arrow-up fw-bold fs-5 pe-2"></i>
                 Préstamos
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#devoluciones">
+                <i class="bi bi-journal-check fw-bold fs-5 pe-2"></i>
+                Devoluciones
               </a>
             </li>
 
@@ -266,6 +273,54 @@
                 <tr>
                   <td colspan="6" class="text-center text-muted">
                     Presiona "Cargar préstamos"
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- DEVOLUCIONES -->
+        <div class="card mt-4" id="devoluciones">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Devoluciones</h5>
+            <button class="btn btn-primary btn-sm" onclick="cargarDevoluciones()">
+              Cargar devoluciones
+            </button>
+          </div>
+
+          <div class="card-body">
+            <div class="row g-2 mb-3">
+              <div class="col-md-4">
+                <input class="form-control" id="devolucionPrestamoId" type="number" placeholder="ID préstamo">
+              </div>
+
+              <div class="col-md-5">
+                <input class="form-control" id="devolucionObservaciones" placeholder="Observaciones">
+              </div>
+
+              <div class="col-md-3">
+                <button class="btn btn-success w-100" onclick="registrarDevolucion()">
+                  Registrar devolución
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>ID Préstamo</th>
+                  <th>Fecha devolución</th>
+                  <th>Observaciones</th>
+                </tr>
+                </thead>
+                <tbody id="tablaDevoluciones">
+                <tr>
+                  <td colspan="4" class="text-center text-muted">
+                    Presiona "Cargar devoluciones"
                   </td>
                 </tr>
                 </tbody>

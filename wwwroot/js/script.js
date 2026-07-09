@@ -296,3 +296,73 @@ function registrarPrestamo() {
     }
   });
 }
+function cargarDevoluciones() {
+  $.ajax({
+    url: API_DEVOLUCIONES,
+    method: 'GET',
+    success: function (devoluciones) {
+      let filas = '';
+
+      if (devoluciones.length === 0) {
+        filas = `
+          <tr>
+            <td colspan="4" class="text-center text-muted">
+              No hay devoluciones registradas
+            </td>
+          </tr>
+        `;
+      }
+
+      devoluciones.forEach(function (devolucion) {
+        filas += `
+          <tr>
+            <td>${devolucion.id}</td>
+            <td>${devolucion.prestamo_id}</td>
+            <td>${devolucion.fecha_devolucion}</td>
+            <td>${devolucion.observaciones || ''}</td>
+          </tr>
+        `;
+      });
+
+      $('#tablaDevoluciones').html(filas);
+    },
+    error: function (xhr) {
+      alert('Error al cargar devoluciones');
+      console.log(xhr.responseJSON || xhr);
+    }
+  });
+}
+
+function registrarDevolucion() {
+  const prestamoId = $('#devolucionPrestamoId').val();
+  const observaciones = $('#devolucionObservaciones').val();
+
+  if (!prestamoId) {
+    alert('Escribe el ID del préstamo');
+    return;
+  }
+
+  $.ajax({
+    url: API_DEVOLUCIONES,
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      prestamo_id: Number(prestamoId),
+      observaciones: observaciones
+    }),
+    success: function (response) {
+      alert(response.message || 'Devolución registrada correctamente');
+
+      $('#devolucionPrestamoId').val('');
+      $('#devolucionObservaciones').val('');
+
+      cargarDevoluciones();
+      cargarPrestamos();
+    },
+    error: function (xhr) {
+      const message = xhr.responseJSON?.message || 'Error al registrar devolución';
+      alert(message);
+      console.log(xhr.responseJSON || xhr);
+    }
+  });
+}
