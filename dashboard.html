@@ -1,212 +1,495 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Panel de Biblioteca</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link href="./wwwroot/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./wwwroot/css/bootstrap-icons.min.css">
+  <title>Biblioteca Digital</title>
 
-  <script src="./wwwroot/js/jquery-4.0.0.min.js"></script>
-  <script src="./wwwroot/js/script.js?v=3"></script>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #efe3d2;
+      color: #3b2f25;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      background:
+        radial-gradient(circle at top left, rgba(139, 94, 60, 0.16), transparent 34%),
+        linear-gradient(135deg, #f4eadb, #e7d3bd);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: #fffaf2;
+      border: 1px solid #d8bfa4;
+      border-radius: 28px;
+      padding: 26px 30px;
+      box-shadow: 0 16px 38px rgba(91, 62, 39, 0.14);
+    }
+
+    .brand-label {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: #8b5e3c;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      color: #3b2f25;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .topbar p {
+      margin: 8px 0 0;
+      color: #7b6048;
+      font-size: 15px;
+    }
+
+    .logout-button {
+      border: none;
+      border-radius: 16px;
+      padding: 12px 20px;
+      background: #4a2f1b;
+      color: #fff7ed;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .logout-button:hover {
+      background: #2f1d10;
+    }
+
+    .module-shell {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .module-card {
+      width: 100%;
+      background: #fffaf2;
+      border: 1px solid #d8bfa4;
+      border-radius: 32px;
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(91, 62, 39, 0.16);
+    }
+
+    .modulo-dashboard {
+      display: none;
+    }
+
+    .modulo-dashboard.activo {
+      display: block;
+    }
+
+    .module-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: start;
+      padding-bottom: 22px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #e4ccb3;
+    }
+
+    .module-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      margin-bottom: 12px;
+      border-radius: 15px;
+      background: #ead7c0;
+      color: #6f421f;
+      font-weight: 900;
+    }
+
+    .module-header h2 {
+      margin: 0;
+      color: #3b2f25;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .module-header p {
+      margin: 8px 0 0;
+      color: #7b6048;
+      font-size: 15px;
+    }
+
+    .btn-load {
+      border: none;
+      border-radius: 16px;
+      padding: 12px 18px;
+      background: #8b5e3c;
+      color: #fffaf2;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .btn-load:hover {
+      background: #6f421f;
+    }
+
+    .form-area {
+      background: #f8eddf;
+      border: 1px solid #e1c5a8;
+      border-radius: 24px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+
+    .form-title {
+      margin: 0 0 15px;
+      color: #4a2f1b;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(130px, 1fr));
+      gap: 12px;
+    }
+
+    .form-grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .form-actions {
+      margin-top: 16px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .form-control-custom {
+      width: 100%;
+      border: 1px solid #d0ad8a;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 15px;
+      background: #fffdf8;
+      color: #3b2f25;
+      outline: none;
+    }
+
+    .form-control-custom::placeholder {
+      color: #9a7a5e;
+    }
+
+    .form-control-custom:focus {
+      border-color: #8b5e3c;
+      box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.18);
+    }
+
+    .btn-save {
+      border: none;
+      border-radius: 16px;
+      padding: 12px 20px;
+      background: #6f421f;
+      color: #fffaf2;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .btn-save:hover {
+      background: #4a2f1b;
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid #e1c5a8;
+      border-radius: 22px;
+      background: #fffdf8;
+    }
+
+    table {
+      margin: 0;
+      width: 100%;
+      background: #fffdf8;
+    }
+
+    th {
+      background: #f3e2ce !important;
+      color: #4a2f1b;
+      font-weight: 900;
+      font-size: 14px;
+      border-bottom: 1px solid #e1c5a8;
+    }
+
+    td {
+      color: #3b2f25;
+      font-size: 14px;
+      vertical-align: middle;
+      border-bottom: 1px solid #f0ddc8;
+    }
+
+    tr:hover td {
+      background: #fff5e8;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      background: #ead7c0;
+      color: #5b3519;
+    }
+
+    .status.activo {
+      background: #e7ead2;
+      color: #53612e;
+    }
+
+    .status.devuelto {
+      background: #d9c7b6;
+      color: #4a2f1b;
+    }
+
+    .bottom-nav {
+      background: #fffaf2;
+      border: 1px solid #d8bfa4;
+      border-radius: 28px;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      box-shadow: 0 16px 38px rgba(91, 62, 39, 0.14);
+      position: sticky;
+      bottom: 18px;
+      z-index: 10;
+    }
+
+    .bottom-nav button {
+      border: none;
+      border-radius: 18px;
+      padding: 16px 12px;
+      background: #f1dfc9;
+      color: #5b3519;
+      font-weight: 900;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .bottom-nav button:hover {
+      background: #e2c3a2;
+      transform: translateY(-1px);
+    }
+
+    .bottom-nav button.active {
+      background: #4a2f1b;
+      color: #fffaf2;
+    }
+
+    @media (max-width: 950px) {
+      .page {
+        padding: 18px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .topbar h1 {
+        font-size: 28px;
+      }
+
+      .module-card {
+        padding: 22px;
+        border-radius: 24px;
+      }
+
+      .module-header {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid,
+      .form-grid.two {
+        grid-template-columns: 1fr;
+      }
+
+      .bottom-nav {
+        grid-template-columns: 1fr;
+        position: static;
+      }
+
+      .form-actions {
+        justify-content: stretch;
+      }
+
+      .btn-save,
+      .btn-load,
+      .logout-button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<header>
-  <div class="px-3 py-2 text-bg-primary border-bottom">
-    <div class="container-fluid">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
-          <i class="bi bi-bootstrap fw-bold fs-5 pe-2"></i>
-          <span class="fw-bold">Biblioteca</span>
-        </a>
-
-        <nav>
-          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-            <li>
-              <a class="nav-link text-white" href="dashboard.html">
-                <i class="bi bi-house fw-bold fs-5 pe-2"></i>Home
-              </a>
-            </li>
-            <li>
-              <a class="nav-link text-white" href="index.html">
-                <i class="bi bi-box-arrow-in-left fw-bold fs-5 pe-2"></i>Login
-              </a>
-            </li>
-          </ul>
-        </nav>
+  <main class="page">
+    <header class="topbar">
+      <div>
+        <span class="brand-label">Biblioteca digital</span>
+        <h1>Gestiona tu biblioteca</h1>
+        <p>Una vista sencilla para registrar, consultar y organizar la información principal.</p>
       </div>
-    </div>
-  </div>
-</header>
 
-<div class="container-fluid">
-  <div class="row">
+      <button class="logout-button" onclick="cerrarSesion()">Salir</button>
+    </header>
 
-    <aside class="col-8 col-sm-6 col-md-3 col-lg-3 col-xl-2 d-none d-lg-block show"
-           style="position: fixed; top: 0; bottom: 0; left: 0; border-right: 1px solid var(--bs-border-color-translucent); margin-top:70px; padding: 15px 0 0; z-index: 999; overflow-y: auto;">
+    <section class="module-shell">
+      <div class="module-card">
 
-      <div class="px-3">
-        <nav>
-          <ul class="nav nav-pills flex-column mb-auto">
+        <section id="usuarios" class="modulo-dashboard activo">
+          <div class="module-header">
+            <div>
+              <span class="module-number">01</span>
+              <h2>Usuarios</h2>
+              <p>Registra personas que pueden solicitar préstamos de libros.</p>
+            </div>
 
-            <li class="nav-item">
-              <a class="nav-link active" href="#usuarios">
-                <i class="bi bi-people fw-bold fs-5 pe-2"></i>
-                Usuarios
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#autores">
-                <i class="bi bi-person-lines-fill fw-bold fs-5 pe-2"></i>
-                Autores
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#libros">
-                <i class="bi bi-book fw-bold fs-5 pe-2"></i>
-                Libros
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#prestamos">
-                <i class="bi bi-journal-arrow-up fw-bold fs-5 pe-2"></i>
-                Préstamos
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#devoluciones">
-                <i class="bi bi-journal-check fw-bold fs-5 pe-2"></i>
-                Devoluciones
-              </a>
-            </li>
-
-          </ul>
-        </nav>
-      </div>
-    </aside>
-
-    <main class="col-lg-9 col-xl-10 offset-lg-3 offset-xl-2">
-      <div class="container mt-5 mb-5">
-
-        <h1 class="mb-4">Panel de Biblioteca</h1>
-
-        <!-- USUARIOS -->
-        <div class="card" id="usuarios">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Usuarios registrados</h5>
-            <button class="btn btn-primary btn-sm" onclick="cargarUsuarios()">
-              Cargar usuarios
-            </button>
+            <button class="btn-load" onclick="cargarUsuarios()">Cargar usuarios</button>
           </div>
 
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped">
-                <thead>
+          <div class="form-area">
+            <h3 class="form-title">Nuevo usuario</h3>
+
+            <div class="form-grid">
+              <input id="usuario_nombre" class="form-control-custom" placeholder="Nombre" />
+              <input id="usuario_correo" class="form-control-custom" placeholder="Correo" />
+              <input id="usuario_identificacion" class="form-control-custom" placeholder="Identificación" />
+            </div>
+
+            <div class="form-actions">
+              <button class="btn-save" onclick="registrarUsuario()">Registrar usuario</button>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="table table-hover">
+              <thead>
                 <tr>
                   <th>ID</th>
                   <th>Nombre</th>
                   <th>Correo</th>
                   <th>Identificación</th>
                 </tr>
-                </thead>
-                <tbody id="tablaUsuarios">
+              </thead>
+              <tbody id="tabla_usuarios">
                 <tr>
-                  <td colspan="4" class="text-center text-muted">
-                    Presiona "Cargar usuarios"
-                  </td>
+                  <td colspan="4">No hay usuarios cargados</td>
                 </tr>
-                </tbody>
-              </table>
-            </div>
+              </tbody>
+            </table>
           </div>
-        </div>
+        </section>
 
-        <!-- AUTORES -->
-        <div class="card mt-4" id="autores">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Autores</h5>
-            <button class="btn btn-primary btn-sm" onclick="cargarAutores()">
-              Cargar autores
-            </button>
-          </div>
-
-          <div class="card-body">
-            <div class="row g-2 mb-3">
-              <div class="col-md-9">
-                <input class="form-control" id="autorNombre" placeholder="Nombre del autor">
-              </div>
-
-              <div class="col-md-3">
-                <button class="btn btn-success w-100" onclick="registrarAutor()">
-                  Registrar autor
-                </button>
-              </div>
+        <section id="autores" class="modulo-dashboard">
+          <div class="module-header">
+            <div>
+              <span class="module-number">02</span>
+              <h2>Autores</h2>
+              <p>Administra los autores para relacionarlos con los libros.</p>
             </div>
 
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped">
-                <thead>
+            <button class="btn-load" onclick="cargarAutores()">Cargar autores</button>
+          </div>
+
+          <div class="form-area">
+            <h3 class="form-title">Nuevo autor</h3>
+
+            <div class="form-grid two">
+              <input id="autor_nombre" class="form-control-custom" placeholder="Nombre del autor" />
+            </div>
+
+            <div class="form-actions">
+              <button class="btn-save" onclick="registrarAutor()">Registrar autor</button>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="table table-hover">
+              <thead>
                 <tr>
                   <th>ID</th>
                   <th>Nombre</th>
                 </tr>
-                </thead>
-                <tbody id="tablaAutores">
+              </thead>
+              <tbody id="tabla_autores">
                 <tr>
-                  <td colspan="2" class="text-center text-muted">
-                    Presiona "Cargar autores"
-                  </td>
+                  <td colspan="2">No hay autores cargados</td>
                 </tr>
-                </tbody>
-              </table>
-            </div>
+              </tbody>
+            </table>
           </div>
-        </div>
+        </section>
 
-        <!-- LIBROS -->
-        <div class="card mt-4" id="libros">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Libros</h5>
-            <button class="btn btn-primary btn-sm" onclick="cargarLibros()">
-              Cargar libros
-            </button>
-          </div>
-
-          <div class="card-body">
-            <div class="row g-2 mb-3">
-              <div class="col-md-4">
-                <input class="form-control" id="libroTitulo" placeholder="Título del libro">
-              </div>
-
-              <div class="col-md-2">
-                <input class="form-control" id="libroAutorId" type="number" placeholder="ID autor">
-              </div>
-
-              <div class="col-md-3">
-                <input class="form-control" id="libroIsbn" placeholder="ISBN">
-              </div>
-
-              <div class="col-md-1">
-                <input class="form-control" id="libroCantidad" type="number" placeholder="Cant.">
-              </div>
-
-              <div class="col-md-2">
-                <button class="btn btn-success w-100" onclick="registrarLibro()">
-                  Registrar
-                </button>
-              </div>
+        <section id="libros" class="modulo-dashboard">
+          <div class="module-header">
+            <div>
+              <span class="module-number">03</span>
+              <h2>Libros</h2>
+              <p>Registra títulos, autor, ISBN y cantidad disponible.</p>
             </div>
 
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped">
-                <thead>
+            <button class="btn-load" onclick="cargarLibros()">Cargar libros</button>
+          </div>
+
+          <div class="form-area">
+            <h3 class="form-title">Nuevo libro</h3>
+
+            <div class="form-grid">
+              <input id="libro_titulo" class="form-control-custom" placeholder="Título" />
+              <input id="libro_autor_id" type="number" class="form-control-custom" placeholder="ID autor" />
+              <input id="libro_isbn" class="form-control-custom" placeholder="ISBN" />
+              <input id="libro_cantidad" type="number" class="form-control-custom" placeholder="Cantidad" />
+            </div>
+
+            <div class="form-actions">
+              <button class="btn-save" onclick="registrarLibro()">Registrar libro</button>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="table table-hover">
+              <thead>
                 <tr>
                   <th>ID</th>
                   <th>Título</th>
@@ -214,52 +497,44 @@
                   <th>ISBN</th>
                   <th>Cantidad</th>
                 </tr>
-                </thead>
-                <tbody id="tablaLibros">
+              </thead>
+              <tbody id="tabla_libros">
                 <tr>
-                  <td colspan="5" class="text-center text-muted">
-                    Presiona "Cargar libros"
-                  </td>
+                  <td colspan="5">No hay libros cargados</td>
                 </tr>
-                </tbody>
-              </table>
-            </div>
+              </tbody>
+            </table>
           </div>
-        </div>
+        </section>
 
-        <!-- PRÉSTAMOS -->
-        <div class="card mt-4" id="prestamos">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Préstamos</h5>
-            <button class="btn btn-primary btn-sm" onclick="cargarPrestamos()">
-              Cargar préstamos
-            </button>
-          </div>
-
-          <div class="card-body">
-            <div class="row g-2 mb-3">
-              <div class="col-md-3">
-                <input class="form-control" id="prestamoUsuarioId" type="number" placeholder="ID usuario">
-              </div>
-
-              <div class="col-md-3">
-                <input class="form-control" id="prestamoLibroId" type="number" placeholder="ID libro">
-              </div>
-
-              <div class="col-md-3">
-                <input class="form-control" id="prestamoFechaLimite" type="date">
-              </div>
-
-              <div class="col-md-3">
-                <button class="btn btn-success w-100" onclick="registrarPrestamo()">
-                  Registrar préstamo
-                </button>
-              </div>
+        <section id="prestamos" class="modulo-dashboard">
+          <div class="module-header">
+            <div>
+              <span class="module-number">04</span>
+              <h2>Préstamos</h2>
+              <p>Registra préstamos usando el ID del usuario y el ID del libro.</p>
             </div>
 
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped">
-                <thead>
+            <button class="btn-load" onclick="cargarPrestamos()">Cargar préstamos</button>
+          </div>
+
+          <div class="form-area">
+            <h3 class="form-title">Nuevo préstamo</h3>
+
+            <div class="form-grid">
+              <input id="prestamo_usuario_id" type="number" class="form-control-custom" placeholder="ID usuario" />
+              <input id="prestamo_libro_id" type="number" class="form-control-custom" placeholder="ID libro" />
+              <input id="prestamo_fecha_limite" type="date" class="form-control-custom" />
+            </div>
+
+            <div class="form-actions">
+              <button class="btn-save" onclick="registrarPrestamo()">Registrar préstamo</button>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="table table-hover">
+              <thead>
                 <tr>
                   <th>ID</th>
                   <th>ID Usuario</th>
@@ -268,73 +543,104 @@
                   <th>Fecha límite</th>
                   <th>Estado</th>
                 </tr>
-                </thead>
-                <tbody id="tablaPrestamos">
+              </thead>
+              <tbody id="tabla_prestamos">
                 <tr>
-                  <td colspan="6" class="text-center text-muted">
-                    Presiona "Cargar préstamos"
-                  </td>
+                  <td colspan="6">No hay préstamos cargados</td>
                 </tr>
-                </tbody>
-              </table>
-            </div>
+              </tbody>
+            </table>
           </div>
-        </div>
+        </section>
 
-        <!-- DEVOLUCIONES -->
-        <div class="card mt-4" id="devoluciones">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Devoluciones</h5>
-            <button class="btn btn-primary btn-sm" onclick="cargarDevoluciones()">
-              Cargar devoluciones
-            </button>
-          </div>
-
-          <div class="card-body">
-            <div class="row g-2 mb-3">
-              <div class="col-md-4">
-                <input class="form-control" id="devolucionPrestamoId" type="number" placeholder="ID préstamo">
-              </div>
-
-              <div class="col-md-5">
-                <input class="form-control" id="devolucionObservaciones" placeholder="Observaciones">
-              </div>
-
-              <div class="col-md-3">
-                <button class="btn btn-success w-100" onclick="registrarDevolucion()">
-                  Registrar devolución
-                </button>
-              </div>
+        <section id="devoluciones" class="modulo-dashboard">
+          <div class="module-header">
+            <div>
+              <span class="module-number">05</span>
+              <h2>Devoluciones</h2>
+              <p>Registra devoluciones y consulta el historial de entregas.</p>
             </div>
 
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped">
-                <thead>
+            <button class="btn-load" onclick="cargarDevoluciones()">Cargar devoluciones</button>
+          </div>
+
+          <div class="form-area">
+            <h3 class="form-title">Nueva devolución</h3>
+
+            <div class="form-grid two">
+              <input id="devolucion_prestamo_id" type="number" class="form-control-custom" placeholder="ID préstamo" />
+              <input id="devolucion_observaciones" class="form-control-custom" placeholder="Observaciones" />
+            </div>
+
+            <div class="form-actions">
+              <button class="btn-save" onclick="registrarDevolucion()">Registrar devolución</button>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="table table-hover">
+              <thead>
                 <tr>
                   <th>ID</th>
                   <th>ID Préstamo</th>
                   <th>Fecha devolución</th>
                   <th>Observaciones</th>
                 </tr>
-                </thead>
-                <tbody id="tablaDevoluciones">
+              </thead>
+              <tbody id="tabla_devoluciones">
                 <tr>
-                  <td colspan="4" class="text-center text-muted">
-                    Presiona "Cargar devoluciones"
-                  </td>
+                  <td colspan="4">No hay devoluciones cargadas</td>
                 </tr>
-                </tbody>
-              </table>
-            </div>
+              </tbody>
+            </table>
           </div>
-        </div>
+        </section>
 
       </div>
-    </main>
+    </section>
 
-  </div>
-</div>
+    <nav class="bottom-nav">
+      <button class="active" onclick="mostrarModulo('usuarios')">Usuarios</button>
+      <button onclick="mostrarModulo('autores')">Autores</button>
+      <button onclick="mostrarModulo('libros')">Libros</button>
+      <button onclick="mostrarModulo('prestamos')">Préstamos</button>
+      <button onclick="mostrarModulo('devoluciones')">Devoluciones</button>
+    </nav>
+  </main>
 
-<script src="./wwwroot/js/bootstrap.bundle.min.js"></script>
+  <script src="./wwwroot/js/jquery-4.0.0.min.js"></script>
+  <script src="./wwwroot/js/script.js?v=7"></script>
+
+  <script>
+    function mostrarModulo(modulo) {
+      $('.modulo-dashboard').removeClass('activo');
+      $('#' + modulo).addClass('activo');
+
+      $('.bottom-nav button').removeClass('active');
+
+      $('.bottom-nav button').each(function () {
+        if ($(this).text().trim().toLowerCase() === nombreModulo(modulo)) {
+          $(this).addClass('active');
+        }
+      });
+    }
+
+    function nombreModulo(modulo) {
+      const nombres = {
+        usuarios: 'usuarios',
+        autores: 'autores',
+        libros: 'libros',
+        prestamos: 'préstamos',
+        devoluciones: 'devoluciones',
+      };
+
+      return nombres[modulo];
+    }
+
+    function cerrarSesion() {
+      localStorage.removeItem('usuario_logueado');
+      window.location.href = 'index.html';
+    }
+  </script>
 </body>
 </html>
